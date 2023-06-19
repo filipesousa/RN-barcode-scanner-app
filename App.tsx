@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { BarcodeFormat, useScanBarcodes } from 'vision-camera-code-scanner';
 
 type Props = {
   onQrCodeRead: (qrCode: string) => void;
@@ -17,6 +18,10 @@ const App = ({ onQrCodeRead, children }: Props) => {
   const devices = useCameraDevices();
   const device = devices.back;
 
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
+    checkInverted: true,
+  });
+
   useEffect(() => {
     (async () => {
       const status = await Camera.requestCameraPermission();
@@ -24,19 +29,20 @@ const App = ({ onQrCodeRead, children }: Props) => {
     })();
   }, []);
 
-  console.log('devices', device)
+  console.log('devices', !!device)
 
   return (
       <View style={styles.container}>
         {device && (
           <Camera
+          frameProcessor={frameProcessor}
             device={device}
             isActive={true}
             frameProcessorFps={5}
             style={styles.preview}
           />
         )}
-        {children}
+        <Text>Barcodes: {JSON.stringify(barcodes && barcodes.length> 0 && barcodes[0].displayValue, undefined,2)}</Text>
       </View>
   );
 };

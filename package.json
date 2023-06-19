@@ -8,12 +8,15 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "clean:android": "cd android && gradlew clean"
+    "clean:android": "cd android && gradlew clean",
+    "startFresh": "react-native start --reset-cache"
   },
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.71.10",
-    "react-native-vision-camera": "^2.15.4"
+    "react-native-reanimated": "^3.3.0",
+    "react-native-vision-camera": "^2.15.4",
+    "vision-camera-code-scanner": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
